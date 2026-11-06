@@ -1,4 +1,6 @@
-name: Maven Tests
+name: University Management System CI
+
+run-name: ${{ github.event.head_commit.message || github.event.pull_request.title || 'Manual test run' }}
 
 on:
   push:
@@ -8,9 +10,13 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: university-management-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
-    name: Run Unit and Integration Tests
+    name: Build and test (Java 25)
     runs-on: ubuntu-latest
 
     steps:
