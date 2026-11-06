@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | UniFlow</title><link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<aside class="sidebar">
+    <div class="logo"><span class="brand-mark small">U</span><span>Uni<span>Flow</span></span></div>
+    <p class="nav-label">Workspace</p>
+    <button class="nav-item active" data-resource="overview">▦ <span>Overview</span></button>
+    <button class="nav-item" data-resource="admins" sec:authorize="hasRole('ADMIN')">♙ <span>Administrators</span></button>
+    <button class="nav-item" data-resource="teachers" sec:authorize="hasAnyRole('ADMIN','TEACHER')">♧ <span>Teachers</span></button>
+    <button class="nav-item" data-resource="students" sec:authorize="hasAnyRole('ADMIN','TEACHER','STUDENT')">♤ <span>Students</span></button>
+    <div class="sidebar-bottom"><div class="user-chip"><div class="avatar" th:text="${#authentication.name.substring(0,1).toUpperCase()}">A</div><div><strong th:text="${#authentication.name}">admin</strong><small>Signed in</small></div></div>
+        <form method="post" th:action="@{/logout}"><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"><button class="logout" type="submit">↪ Sign out</button></form></div>
+</aside>
+<main class="main">
+    <header><div><p class="eyebrow">UNIVERSITY MANAGEMENT</p><h1 id="page-title">Good morning, <span th:text="${#authentication.name}">admin</span>.</h1></div><div class="date" id="today"></div></header>
+    <section id="overview" class="view"><div class="welcome"><div><p class="eyebrow">CAMPUS SNAPSHOT</p><h2>Everything in one place.</h2><p>Manage your university community with clarity and confidence.</p></div><div class="welcome-art">✦</div></div>
+        <div class="stats"><div class="stat-card"><span class="stat-icon purple">♙</span><div><small>Administrators</small><strong id="admin-count">—</strong></div></div><div class="stat-card"><span class="stat-icon orange">♧</span><div><small>Teachers</small><strong id="teacher-count">—</strong></div></div><div class="stat-card"><span class="stat-icon blue">♤</span><div><small>Students</small><strong id="student-count">—</strong></div></div></div>
+        <div class="section-heading"><div><p class="eyebrow">QUICK ACCESS</p><h2>Explore your workspace</h2></div></div><div class="quick-grid"><button data-resource="teachers"><span>♧</span><b>Teacher directory</b><small>View and manage teaching staff</small></button><button data-resource="students"><span>♤</span><b>Student directory</b><small>View and manage enrolled students</small></button></div>
+    </section>
+    <section id="table-view" class="view hidden"><div class="section-heading"><div><p class="eyebrow">DIRECTORY</p><h2 id="table-title">Directory</h2></div><button class="primary" id="add-button">＋ Add member</button></div><div class="table-card"><table><thead><tr><th>Member</th><th>Email</th><th id="department-header">Department</th><th>Identifier</th><th></th></tr></thead><tbody id="members"></tbody></table><div class="empty hidden" id="empty">No members found yet.</div></div></section>
+</main>
+<dialog id="member-dialog"><form method="dialog" id="member-form"><button class="close" value="cancel">×</button><p class="eyebrow">MEMBER DETAILS</p><h2 id="dialog-title">Add member</h2><input type="hidden" id="member-id"><label>Full name<input id="fullName" required></label><label>Username<input id="username" required></label><label>Email<input id="email" type="email" required></label><label id="department-field">Department<input id="department"></label><label id="student-field">Student ID<input id="studentId"></label><label>Password<input id="password" type="password" placeholder="Required for new members"></label><p class="form-error" id="form-error"></p><button class="primary full" value="default">Save member</button></form></dialog>
+<script th:src="@{/js/app.js}"></script>
+</body></html>
