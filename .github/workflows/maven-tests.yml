@@ -1,4 +1,5 @@
-name: Maven tests
+
+name: Maven Tests
 
 on:
   push:
@@ -8,17 +9,13 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: maven-tests-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   test:
-    name: Run unit and integration tests
+    name: Run Unit and Integration Tests
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Java 25
@@ -27,14 +24,16 @@ jobs:
           distribution: temurin
           java-version: '25'
           cache: maven
+          cache-dependency-path: 'University Management System/pom.xml'
 
-      - name: Run Maven tests
-        run: ./mvnw --batch-mode --no-transfer-progress verify
+      - name: Run all tests
+        working-directory: ./University Management System
+        run: bash ./mvnw --batch-mode --no-transfer-progress verify
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-test-reports
-          path: target/surefire-reports/
+          name: maven-test-reports
+          path: University Management System/target/surefire-reports/
           if-no-files-found: ignore
