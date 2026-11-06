@@ -1,4 +1,3 @@
-
 name: Maven Tests
 
 on:
@@ -27,13 +26,13 @@ jobs:
           cache-dependency-path: 'University Management System/pom.xml'
 
       - name: Run all tests
-        working-directory: ./University Management System
-        run: bash ./mvnw --batch-mode --no-transfer-progress verify
+        working-directory: "University Management System"
+        run: mvn --batch-mode --no-transfer-progress verify
 
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: maven-test-reports
-          path: University Management System/target/surefire-reports/
+          path: "University Management System/target/surefire-reports/"
           if-no-files-found: ignore
