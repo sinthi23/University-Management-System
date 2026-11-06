@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentCaptor.forClass;
@@ -34,6 +35,11 @@ class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    @Test
+    void ciFailureDemo() {
+        fail("Intentional CI failure: verifying that GitHub Actions reports failed tests correctly.");
+    }
 
     @Test
     void findByRoleReturnsResponsesForMatchingRole() {
